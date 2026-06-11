@@ -1,0 +1,10 @@
+.DS_Store
+outputs/
+*.asv
+*.m~
+matlab_workspace.mat
+rewpGrandERP.mat
+*_sLoretta.mat
+*.nii
+*.jpg
+*.png
