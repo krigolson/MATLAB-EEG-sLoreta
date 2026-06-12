@@ -38,6 +38,8 @@ addParameter(parser, 'AtlasName', 'DKT', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'ProjectionRadius', 35, @(x) isnumeric(x) && ...
     isscalar(x) && isfinite(x) && x > 0);
 addParameter(parser, 'ProjectionMode', '3d', @(x) ischar(x) || isstring(x));
+addParameter(parser, 'BrainTemplate', 'brainnet', @(x) ischar(x) || isstring(x));
+addParameter(parser, 'SurfaceFile', '', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'ColorPercentile', 99, @(x) isnumeric(x) && ...
     isscalar(x) && x >= 0 && x <= 100);
 addParameter(parser, 'MakeSlicePlot', true, @(x) islogical(x) || isnumeric(x));
@@ -135,6 +137,8 @@ metadata.reference = char(opts.Reference);
 metadata.atlasName = char(opts.AtlasName);
 metadata.projectionRadius = opts.ProjectionRadius;
 metadata.projectionMode = char(opts.ProjectionMode);
+metadata.brainTemplate = char(opts.BrainTemplate);
+metadata.surfaceFile = char(opts.SurfaceFile);
 metadata.autoSliceMinZ = opts.AutoSliceMinZ;
 metadata.overlaySigmaMm = opts.OverlaySigmaMm;
 metadata.numSliceRows = opts.NumSliceRows;
@@ -153,6 +157,8 @@ plot_sloreta_signed_cortex(inverse.sourceXYZ, sourceValues, ...
     'ColorLimit', colorLimit, ...
     'ProjectionRadius', opts.ProjectionRadius, ...
     'ProjectionMode', char(opts.ProjectionMode), ...
+    'BrainTemplate', opts.BrainTemplate, ...
+    'SurfaceFile', opts.SurfaceFile, ...
     'OutputPng', imageFile);
 
 if logical(opts.MakeSlicePlot)

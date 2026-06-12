@@ -22,6 +22,8 @@ addParameter(parser, 'Alpha', 0.05, @(x) isnumeric(x) && isscalar(x) && x > 0 &&
 addParameter(parser, 'Correction', 'fdr', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'Tail', 'both', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'MapStatistic', 't', @(x) ischar(x) || isstring(x));
+addParameter(parser, 'BrainTemplate', 'brainnet', @(x) ischar(x) || isstring(x));
+addParameter(parser, 'SurfaceFile', '', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'MakeSlicePlot', true, @(x) islogical(x) || isnumeric(x));
 addParameter(parser, 'MakeMriSlicePlot', true, @(x) islogical(x) || isnumeric(x));
 addParameter(parser, 'CloseFigures', false, @(x) islogical(x) || isnumeric(x));
@@ -83,9 +85,9 @@ mriSliceFile = fullfile(outputDir, [char(opts.OutputPrefix) '_group_mri_slices.p
 
 write_group_contrast_csv(csvFile, regionStats);
 plot_group_contrast_regions(significantStats, atlasName, char(opts.MapStatistic), ...
-    imageFile, logical(opts.CloseFigures));
+    imageFile, logical(opts.CloseFigures), opts.BrainTemplate, opts.SurfaceFile);
 plot_group_contrast_regions(regionStats, atlasName, 'signedLogP', ...
-    pMapFile, logical(opts.CloseFigures));
+    pMapFile, logical(opts.CloseFigures), opts.BrainTemplate, opts.SurfaceFile);
 
 metadata = struct();
 metadata.createdBy = mfilename;
@@ -392,7 +394,7 @@ for idx = 1:numel(rows)
 end
 end
 
-function plot_group_contrast_regions(rows, atlasName, mapStatistic, outputPng, closeFigures)
+function plot_group_contrast_regions(rows, atlasName, mapStatistic, outputPng, closeFigures, brainTemplate, surfaceFile)
 cortexFile = fullfile(fileparts(mfilename('fullpath')), ...
     'templates', 'cortex', 'brainstorm_icbm152_cortex_pial_low.mat');
 cortex = load(cortexFile, 'Vertices', 'Faces', 'Atlas');
@@ -417,6 +419,8 @@ end
 fig = plot_sloreta_signed_cortex(vertices, vertexValues, ...
     'View', 'six', ...
     'ProjectionRadius', 1, ...
+    'BrainTemplate', brainTemplate, ...
+    'SurfaceFile', surfaceFile, ...
     'OutputPng', outputPng);
 if closeFigures
     close(fig);

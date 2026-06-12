@@ -3,7 +3,7 @@
 This folder contains MATLAB tools for running a simple subject-level sLORETA
 analysis and saving the results as:
 
-- a six-view brain image
+- a five-view brain image
 - a ranked brain-region CSV file
 - a `.mat` file that can be used later for group-level analysis
 
@@ -44,7 +44,7 @@ The example runs subject 1, condition 1 from a small example data file.
 It creates files in the `outputs` folder:
 
 - `rewp_sub01_cond01_sixview.png`
-  - the six-view brain image
+  - the five-view BrainNet ICBM152 brain image
 - `rewp_sub01_cond01_slices.png`
   - sagittal, coronal, and axial internal source slices
 - `rewp_sub01_cond01_mri_slices.png`
@@ -212,8 +212,34 @@ It shows:
 
 ```text
 left   top   right
-front  back  bottom
+front  back
 ```
+
+The filename keeps `_sixview` for compatibility with earlier versions, but
+the current default figure uses five views and omits the bottom view.
+
+By default the surface is the included BrainNet ICBM152 cortex:
+
+```matlab
+'BrainTemplate', 'brainnet'
+```
+
+Other built-in choices are:
+
+```matlab
+'BrainTemplate', 'brainnet_smoothed'
+'BrainTemplate', 'brainstorm'
+```
+
+Advanced users can provide a custom BrainNet `.nv` file or MATLAB surface
+file:
+
+```matlab
+'SurfaceFile', '/path/to/my_surface.nv'
+```
+
+MATLAB surface files can contain `Vertices`/`Faces` or FieldTrip-style
+`mesh.pos`/`mesh.tri`.
 
 ### Internal Slice Image
 
