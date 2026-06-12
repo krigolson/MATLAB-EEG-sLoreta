@@ -84,12 +84,12 @@ outputDir = 'outputs';
 %   _regions.csv
 %   _source.mat
 %
-% For example, if outputPrefix is 'rewp_sub01_cond01', the image file will
+% For example, if outputPrefix is 'sample_sub01_cond01', the image file will
 % be:
 %
-%   rewp_sub01_cond01_sixview.png
+%   sample_sub01_cond01_sixview.png
 
-outputPrefix = 'rewp_sub01_cond01';
+outputPrefix = 'sample_sub01_cond01';
 
 %% Step 7: Run sLORETA and make the outputs
 % Most users only need to edit the variables above this line.

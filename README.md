@@ -43,15 +43,15 @@ The example runs subject 1, condition 1 from a small example data file.
 
 It creates files in the `outputs` folder:
 
-- `rewp_sub01_cond01_sixview.png`
+- `sample_sub01_cond01_sixview.png`
   - the five-view BrainNet ICBM152 brain image
-- `rewp_sub01_cond01_slices.png`
+- `sample_sub01_cond01_slices.png`
   - sagittal, coronal, and axial internal source slices
-- `rewp_sub01_cond01_mri_slices.png`
+- `sample_sub01_cond01_mri_slices.png`
   - sagittal, coronal, and axial source overlays on a standard MRI
-- `rewp_sub01_cond01_regions.csv`
+- `sample_sub01_cond01_regions.csv`
   - brain regions ranked from most active to least active
-- `rewp_sub01_cond01_source.mat`
+- `sample_sub01_cond01_source.mat`
   - source-localized data and metadata for later analysis
 
 ## What Data Shape Is Expected?
@@ -102,7 +102,7 @@ outputs = doPlotsLoreta('sampleGrandERP.mat', ...
     'SubjectIdx', 1, ...
     'ConditionIdx', 1, ...
     'OutputDir', 'outputs', ...
-    'OutputPrefix', 'rewp_sub01_cond01');
+    'OutputPrefix', 'sample_sub01_cond01');
 ```
 
 ### What Each Input Means
@@ -127,9 +127,9 @@ Analyze the first condition.
 
 Save results in a folder called `outputs`.
 
-`'OutputPrefix', 'rewp_sub01_cond01'`
+`'OutputPrefix', 'sample_sub01_cond01'`
 
-Start each output filename with `rewp_sub01_cond01`.
+Start each output filename with `sample_sub01_cond01`.
 
 The beginner example can also load the numeric matrix first:
 
@@ -139,7 +139,7 @@ load('sampleGrandERP.mat', 'sampleGrandERP');
 outputs = doPlotsLoreta(sampleGrandERP, ...
     'ConditionIdx', 1, ...
     'OutputDir', 'outputs', ...
-    'OutputPrefix', 'rewp_sub01_cond01');
+    'OutputPrefix', 'sample_sub01_cond01');
 ```
 
 Both styles are supported. Passing a numeric matrix is the cleaner approach
@@ -203,7 +203,7 @@ outputs = doPlotsLoreta('sampleGrandERP.mat', ...
     'ConditionIdx', 1, ...
     'TimeIndex', 317, ...
     'OutputDir', 'outputs', ...
-    'OutputPrefix', 'rewp_sub01_cond01_t317');
+    'OutputPrefix', 'sample_sub01_cond01_t317');
 ```
 
 ## Output Files
@@ -334,7 +334,7 @@ processing, you can close figures automatically:
 You can also plot slices later from a saved output `.mat` file:
 
 ```matlab
-doPlotLoretaSlices('outputs/rewp_sub01_cond01_source.mat', ...
+doPlotLoretaSlices('outputs/sample_sub01_cond01_source.mat', ...
     'SliceXYZ', [-10 20 40], ...
     'OutputPng', 'outputs/custom_slices.png');
 ```
@@ -342,7 +342,7 @@ doPlotLoretaSlices('outputs/rewp_sub01_cond01_source.mat', ...
 For an MRI overlay:
 
 ```matlab
-doPlotLoretaMriSlices('outputs/rewp_sub01_cond01_source.mat', ...
+doPlotLoretaMriSlices('outputs/sample_sub01_cond01_source.mat', ...
     'SliceXYZ', [-10 20 40], ...
     'OutputPng', 'outputs/custom_mri_slices.png');
 ```
