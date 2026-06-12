@@ -16,15 +16,17 @@ clc;
 thisDir = fileparts(mfilename('fullpath'));
 cd(thisDir);
 
-% Load one already-extracted subject.
+% Use the bundled sample data.
 %
-% exampleData is:
+% sampleGrandERP is:
 %
-%   channels x time x conditions
+%   channels x time x conditions x subjects
 %
 % The contrast function will compare condition1Idx against condition2Idx.
 % The code does not care what those conditions mean.
-load('exampleSubjectData.mat', 'exampleData');
+dataFile = 'sampleGrandERP.mat';
+dataVariable = 'sampleGrandERP';
+chanlocsFile = 'sampleGrandERP.mat';
 
 subjectIdx = 1;
 condition1Idx = 1;
@@ -35,7 +37,9 @@ outputDir = fullfile('outputs', 'contrast_single_subject');
 outputPrefix = sprintf('rewp_sub%02d_cond%02dminus%02d_t%03d', ...
     subjectIdx, condition1Idx, condition2Idx, timeIndex);
 
-outputs = doContrastLoreta(exampleData, ...
+outputs = doContrastLoreta(dataFile, ...
+    'DataVariable', dataVariable, ...
+    'ChanlocsFile', chanlocsFile, ...
     'SubjectIdx', subjectIdx, ...
     'Condition1Idx', condition1Idx, ...
     'Condition2Idx', condition2Idx, ...

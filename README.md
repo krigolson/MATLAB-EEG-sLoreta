@@ -62,22 +62,28 @@ The full group data shape is:
 channels x time x conditions x subjects
 ```
 
-For the beginner examples, one subject has already been extracted into:
+The repository includes a bundled sample grand ERP file:
 
 ```text
-exampleSubjectData.mat
+sampleGrandERP.mat
 ```
 
 Inside that file, the variable is:
 
 ```text
-exampleData
+sampleGrandERP
 ```
 
-Its size is:
+The same file also contains EEGLAB-style channel locations in:
 
 ```text
-63 channels x 400 time points x 2 conditions
+chanlocs
+```
+
+`sampleGrandERP` has size:
+
+```text
+63 channels x 400 time points x 2 conditions x 25 subjects
 ```
 
 Data loading is meant to happen outside the main subject-level functions.
@@ -90,8 +96,9 @@ script, then pass the numeric matrix into `doPlotsLoreta` or
 The example function call looks like this:
 
 ```matlab
-outputs = doPlotsLoreta('exampleSubjectData.mat', ...
-    'DataVariable', 'exampleData', ...
+outputs = doPlotsLoreta('sampleGrandERP.mat', ...
+    'DataVariable', 'sampleGrandERP', ...
+    'ChanlocsFile', 'sampleGrandERP.mat', ...
     'SubjectIdx', 1, ...
     'ConditionIdx', 1, ...
     'OutputDir', 'outputs', ...
@@ -100,11 +107,11 @@ outputs = doPlotsLoreta('exampleSubjectData.mat', ...
 
 ### What Each Input Means
 
-`'exampleSubjectData.mat'`
+`'sampleGrandERP.mat'`
 
 The `.mat` file containing the EEG/ERP data.
 
-`'DataVariable', 'exampleData'`
+`'DataVariable', 'sampleGrandERP'`
 
 The name of the variable inside the `.mat` file.
 
@@ -124,12 +131,12 @@ Save results in a folder called `outputs`.
 
 Start each output filename with `rewp_sub01_cond01`.
 
-The beginner example instead loads a numeric matrix first:
+The beginner example can also load the numeric matrix first:
 
 ```matlab
-load('exampleSubjectData.mat', 'exampleData');
+load('sampleGrandERP.mat', 'sampleGrandERP');
 
-outputs = doPlotsLoreta(exampleData, ...
+outputs = doPlotsLoreta(sampleGrandERP, ...
     'ConditionIdx', 1, ...
     'OutputDir', 'outputs', ...
     'OutputPrefix', 'rewp_sub01_cond01');
@@ -189,8 +196,9 @@ every subject.
 To force a specific time point, add `TimeIndex`:
 
 ```matlab
-outputs = doPlotsLoreta('exampleSubjectData.mat', ...
-    'DataVariable', 'exampleData', ...
+outputs = doPlotsLoreta('sampleGrandERP.mat', ...
+    'DataVariable', 'sampleGrandERP', ...
+    'ChanlocsFile', 'sampleGrandERP.mat', ...
     'SubjectIdx', 1, ...
     'ConditionIdx', 1, ...
     'TimeIndex', 317, ...
@@ -283,7 +291,7 @@ face/neck anatomy. If you want the raw maximum regardless of location, use:
 To choose your own slices, add coordinates in millimeters:
 
 ```matlab
-outputs = doPlotsLoreta(exampleData, ...
+outputs = doPlotsLoreta(sampleGrandERP, ...
     'SliceX', -10, ...
     'SliceY', 20, ...
     'SliceZ', 40);
@@ -292,7 +300,7 @@ outputs = doPlotsLoreta(exampleData, ...
 Or set all three at once:
 
 ```matlab
-outputs = doContrastLoreta(exampleData, ...
+outputs = doContrastLoreta(sampleGrandERP, ...
     'SliceXYZ', [-10 20 40]);
 ```
 
@@ -531,10 +539,8 @@ outputs = doPlotsLoreta('yourGroupData.mat', ...
 
 These files are needed for the high-level function:
 
-- `exampleSubjectData.mat`
-  - small one-subject example data file
-- `matlocs.mat`
-  - channel labels and channel-location information
+- `sampleGrandERP.mat`
+  - bundled sample data plus channel labels and channel-location information
 - `leadfield.mat`
   - the forward model used for source localization
 - `templates/cortex/brainstorm_icbm152_cortex_pial_low.mat`

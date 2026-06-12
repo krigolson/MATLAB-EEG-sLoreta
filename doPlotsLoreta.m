@@ -11,8 +11,8 @@ function outputs = doPlotsLoreta(dataInput, varargin)
 %
 %   Common example:
 %
-%       outputs = doPlotsLoreta('exampleSubjectData.mat', ...
-%           'DataVariable', 'exampleData', ...
+%       outputs = doPlotsLoreta('sampleGrandERP.mat', ...
+%           'DataVariable', 'sampleGrandERP', ...
 %           'SubjectIdx', 1, ...
 %           'ConditionIdx', 1, ...
 %           'OutputDir', 'outputs');
@@ -23,14 +23,14 @@ function outputs = doPlotsLoreta(dataInput, varargin)
 %       - .mat file with sourceERP/sourceXYZ/metadata for group analysis
 
 if nargin < 1 || isempty(dataInput)
-    dataInput = 'exampleSubjectData.mat';
+    dataInput = 'sampleGrandERP.mat';
 end
 
 parser = inputParser;
 parser.FunctionName = mfilename;
-addParameter(parser, 'DataVariable', 'exampleData', @(x) ischar(x) || isstring(x));
+addParameter(parser, 'DataVariable', 'sampleGrandERP', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'LeadfieldFile', 'leadfield.mat', @(x) ischar(x) || isstring(x));
-addParameter(parser, 'ChanlocsFile', 'matlocs.mat', @(x) ischar(x) || isstring(x));
+addParameter(parser, 'ChanlocsFile', 'sampleGrandERP.mat', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'OutputDir', pwd, @(x) ischar(x) || isstring(x));
 addParameter(parser, 'OutputPrefix', '', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'SubjectIdx', 1, @(x) isnumeric(x) && isscalar(x) && x >= 1);
@@ -81,7 +81,7 @@ opts = parser.Results;
 rootDir = fileparts(mfilename('fullpath'));
 outputDir = prepare_output_dir(char(opts.OutputDir), rootDir);
 
-[data, dataInfo] = load_or_select_data(dataInput, opts);
+[data, dataInfo] = load_or_select_data(resolve_data_input(dataInput, rootDir), opts);
 
 leadfieldPath = resolve_path(char(opts.LeadfieldFile), rootDir);
 model = load(leadfieldPath, 'leadfield', 'sourceXYZ', 'channelLabels');
@@ -270,6 +270,13 @@ end
 
 info.rawSize = size(raw);
 info.selectedSize = size(data);
+end
+
+function dataInput = resolve_data_input(dataInput, rootDir)
+if isnumeric(dataInput)
+    return;
+end
+dataInput = resolve_path(char(dataInput), rootDir);
 end
 
 function pathOut = resolve_path(pathIn, rootDir)

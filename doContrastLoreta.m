@@ -17,14 +17,14 @@ function outputs = doContrastLoreta(dataInput, varargin)
 %   condition 2 is the negative condition.
 
 if nargin < 1 || isempty(dataInput)
-    dataInput = 'exampleSubjectData.mat';
+    dataInput = 'sampleGrandERP.mat';
 end
 
 parser = inputParser;
 parser.FunctionName = mfilename;
-addParameter(parser, 'DataVariable', 'exampleData', @(x) ischar(x) || isstring(x));
+addParameter(parser, 'DataVariable', 'sampleGrandERP', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'LeadfieldFile', 'leadfield.mat', @(x) ischar(x) || isstring(x));
-addParameter(parser, 'ChanlocsFile', 'matlocs.mat', @(x) ischar(x) || isstring(x));
+addParameter(parser, 'ChanlocsFile', 'sampleGrandERP.mat', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'OutputDir', pwd, @(x) ischar(x) || isstring(x));
 addParameter(parser, 'OutputPrefix', '', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'SubjectIdx', 1, @(x) isnumeric(x) && isscalar(x) && x >= 1);
@@ -71,7 +71,8 @@ opts = parser.Results;
 rootDir = fileparts(mfilename('fullpath'));
 outputDir = prepare_output_dir(char(opts.OutputDir), rootDir);
 
-[condition1Data, condition2Data, dataInfo] = load_or_select_conditions(dataInput, opts);
+[condition1Data, condition2Data, dataInfo] = load_or_select_conditions( ...
+    resolve_data_input(dataInput, rootDir), opts);
 
 leadfieldPath = resolve_path(char(opts.LeadfieldFile), rootDir);
 model = load(leadfieldPath, 'leadfield', 'sourceXYZ', 'channelLabels');
@@ -253,6 +254,13 @@ condition2Data = reshape(condition2Data, size(raw, 1), size(raw, 2), 1, 1);
 info.rawSize = size(raw);
 info.condition1Size = size(condition1Data);
 info.condition2Size = size(condition2Data);
+end
+
+function dataInput = resolve_data_input(dataInput, rootDir)
+if isnumeric(dataInput)
+    return;
+end
+dataInput = resolve_path(char(dataInput), rootDir);
 end
 
 function pathOut = resolve_path(pathIn, rootDir)

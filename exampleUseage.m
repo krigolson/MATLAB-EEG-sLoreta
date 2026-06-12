@@ -27,32 +27,33 @@ thisDir = fileparts(mfilename('fullpath'));
 cd(thisDir);
 
 %% Step 2: Load the input data
-% The current beginner example data file is:
+% The bundled example data file is:
 %
-%   exampleSubjectData.mat
+%   sampleGrandERP.mat
 %
 % It contains a variable called:
 %
-%   exampleData
+%   sampleGrandERP
+%
+% It also contains:
+%
+%   chanlocs
 %
 % The expected data shape is:
 %
-%   channels x time x conditions
+%   channels x time x conditions x subjects
 %
 % For the current file:
 %
-%   63 channels x 400 time points x 2 conditions
+%   63 channels x 400 time points x 2 conditions x 25 subjects
 %
-% Data loading is deliberately done outside doPlotsLoreta. That keeps the
-% main function independent of your file names and variable names.
-
-load('exampleSubjectData.mat', 'exampleData');
+dataFile = 'sampleGrandERP.mat';
+dataVariable = 'sampleGrandERP';
+chanlocsFile = 'sampleGrandERP.mat';
 
 %% Step 3: Choose which subject and condition to analyze
 % MATLAB uses 1-based indexing.
 %
-% This example file already contains one extracted subject, so subjectIdx is
-% mainly saved as metadata in the output files.
 % Condition 1 means the first condition in the file.
 
 subjectIdx = 1;
@@ -128,8 +129,8 @@ outputPrefix = 'rewp_sub01_cond01';
 %
 % Inputs explained:
 %
-%   exampleData
-%       The already-loaded EEG/ERP matrix.
+%   dataFile
+%       The bundled EEG/ERP matrix.
 %
 %   'SubjectIdx'
 %       Which subject to analyze. For this example file, there is only one
@@ -147,7 +148,9 @@ outputPrefix = 'rewp_sub01_cond01';
 %   'OutputPrefix'
 %       Beginning of each output filename.
 
-outputs = doPlotsLoreta(exampleData, ...
+outputs = doPlotsLoreta(dataFile, ...
+    'DataVariable', dataVariable, ...
+    'ChanlocsFile', chanlocsFile, ...
     'SubjectIdx', subjectIdx, ...
     'ConditionIdx', conditionIdx, ...
     'TimeIndex', timeIndex, ...

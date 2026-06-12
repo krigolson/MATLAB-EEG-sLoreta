@@ -4,7 +4,7 @@ function labels = sloreta_chanlocs_labels(chanlocs)
 %   labels = sloreta_chanlocs_labels(chanlocs)
 %
 %   This helper has no EEGLAB dependency. It only expects a struct array with
-%   a labels field, like the chanlocs saved in matlocs.mat.
+%   a labels field, like the chanlocs saved in sampleGrandERP.mat.
 
 if ~isstruct(chanlocs) || ~isfield(chanlocs, 'labels')
     error('%s:BadChanlocs', mfilename, ...

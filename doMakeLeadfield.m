@@ -12,7 +12,7 @@ function outputs = doMakeLeadfield(varargin)
 
 parser = inputParser;
 parser.FunctionName = mfilename;
-addParameter(parser, 'ChanlocsFile', 'matlocs.mat', @(x) ischar(x) || isstring(x));
+addParameter(parser, 'ChanlocsFile', 'sampleGrandERP.mat', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'OutputFile', '', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'FieldTripPath', '', @(x) ischar(x) || isstring(x));
 addParameter(parser, 'Resolution', 10, @(x) isnumeric(x) && isscalar(x) && x > 0);
@@ -33,7 +33,7 @@ nChannels = numel(channelLabels);
 
 outputFile = char(opts.OutputFile);
 if isempty(outputFile)
-    if strcmpi(get_filename(chanlocsFile), 'matlocs.mat') && nChannels == 63
+    if ismember(lower(get_filename(chanlocsFile)), {'matlocs.mat', 'samplegranderp.mat'}) && nChannels == 63
         outputFile = 'leadfield.mat';
     else
         outputFile = sprintf('leadfield_%dchan.mat', nChannels);
